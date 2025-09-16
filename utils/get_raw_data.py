@@ -8,7 +8,7 @@ secret = os.getenv("BINANCE_SECRET_KEY")
 import ccxt
 import pandas as pd
 
-class HandleChart():
+class GetChart():
     def __init__(self):
     # Binance 선물 거래소 초기화
         self.exchange = ccxt.binance({
@@ -26,13 +26,13 @@ class HandleChart():
         return df
 
     #run
-    def btc_1min(self, day = 7):
+    def btc_1min_chadle(self, day = 7):
         # 차트 데이터 가져오기
         ohlcv = self.exchange.fetch_ohlcv('BTC/USDT', timeframe='1m', limit=1440 * day)
         return self.ohlcv2df(ohlcv)
     
     
-    def btc_1day(self, month = 12):
+    def btc_1day_candle(self, month = 12):
         # 차트 데이터 가져오기
         ohlcv = self.exchange.fetch_ohlcv('BTC/USDT', timeframe='1d', limit=30 * month)
         return self.ohlcv2df(ohlcv)
