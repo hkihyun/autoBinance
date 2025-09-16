@@ -20,9 +20,8 @@ class GetChart():
     def ohlcv2df(self, ohlcv):
         df = pd.DataFrame(ohlcv, columns=['timestamp', 'open', 'high', 'low', 'close', 'volume'])
 
-        # timestamp를 datetime 형식으로 변환하고 인덱스로 설정
+        # timestamp를 datetime 형식으로 변환
         df['timestamp'] = pd.to_datetime(df['timestamp'], unit='ms')
-        df.set_index('timestamp', inplace=True)
         return df
 
     #run
