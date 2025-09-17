@@ -1,47 +1,17 @@
-import ta
+'''
+startegy 에서 인덱스를 추출. 
+이 함수는 추출한 인덱스와 df를 이용해 
+1. df에서 필요한 부분만을 추출
+2. 추출한 부분의 구조를 바꾸고 shape(41, 5, _)
+2. df를 np.array로 바꿔준다
+'''
+
 import numpy as np
 
-'''
-# 예시 데이터
-df = pd.DataFrame({
-    'open': [26000, 26050, 26080],
-    'high': [26100, 26120, 26150],
-    'low': [25950, 26000, 26070],
-    'close': [26050, 26080, 26130],
-    'volume': [12.5, 8.2, 5.9],
-    'timestamp': [
-        '2024-09-16 00:00:00',
-        '2024-09-16 00:01:00',
-        '2024-09-16 00:02:00'
-    ]
-})
-'''
-def search_cross_ema(df):
-    # 5EMA, 20EMA 계산
-    df['ema_5'] = ta.trend.ema_indicator(df['close'], window=5)
-    df['ema_20'] = ta.trend.ema_indicator(df['close'], window=20)
-
-    # 크로스 발생 조건
-    # 5EMA가 20EMA를 상향 돌파 → (이전에는 5 < 20) and (현재는 5 >= 20)
-    # 5EMA가 20EMA를 하향 돌파 → (이전에는 5 > 20) and (현재는 5 <= 20)
-    cross_indices = []
-    for i in range(1, len(df)):
-        prev_diff = df.loc[i-1, 'ema_5'] - df.loc[i-1, 'ema_20']
-        curr_diff = df.loc[i, 'ema_5'] - df.loc[i, 'ema_20']
-        if prev_diff < 0 and curr_diff >= 0:   # 골든크로스
-            cross_indices.append(i)
-        elif prev_diff > 0 and curr_diff <= 0: # 데드크로스
-            cross_indices.append(i)
-    df.drop(columns=['ema_5'], inplace=True)
-    df.drop(columns=['ema_20'], inplace=True)
-    return cross_indices
-
-def raw_data_to_ema_precess_data(df):
-    # ema 지점 추출
-    cross_indices = search_cross_ema(df)
+def make_array_structure(indexs, df):
     # 각 크로스 지점 기준으로 전후 30개 row 추출
     result_segments = []
-    for idx in cross_indices:
+    for idx in indexs:
         start = idx - 39
         after_start = idx + 1
         after_end = idx + 6 
@@ -66,24 +36,19 @@ def raw_data_to_ema_precess_data(df):
         after_segment['low'] = (after_segment['low'] / base_price_after - 1) * 100  # 퍼센트(%)
         end = after_segment['open'].to_frame().T
 
-        # 두 구간을 붙이다
-        # segment = pd.concat([prev_segment, end])
-        # result_segments.append(segment)
-
         # 두 구간을 numpy 배열로 변환
         prev_np = prev_segment.to_numpy()
         end_np = end.to_numpy()
 
         # 수직으로 붙이기 (40행 + 1행 = 41행)
         segment_np = np.vstack([prev_np, end_np])
-
         result_segments.append(segment_np)
-
 
     final_np = np.stack(result_segments)
     final_np = np.round(final_np, 5)
+
     # 결과 확인
     print(final_np.shape)
     print(final_np)
-    # np.array shape(41, 5, _)
+    
     return final_np
