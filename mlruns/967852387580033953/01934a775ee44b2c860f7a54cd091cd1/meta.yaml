@@ -1,0 +1,14 @@
+artifact_uri: file:///C:/Users/user/Desktop/autoB/mlruns/967852387580033953/01934a775ee44b2c860f7a54cd091cd1/artifacts
+end_time: 1758093099582
+entry_point_name: ''
+experiment_id: '967852387580033953'
+lifecycle_stage: active
+run_id: 01934a775ee44b2c860f7a54cd091cd1
+run_name: beautiful-rat-439
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1758093069263
+status: 3
+tags: []
+user_id: user
