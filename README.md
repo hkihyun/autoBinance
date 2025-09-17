@@ -80,3 +80,6 @@ detector.save_events(events, "data/precessed_data/events.npy")
 
 
 
+## 백테스트 실행법
+
+python backtest.py --config config/backtest_config.json

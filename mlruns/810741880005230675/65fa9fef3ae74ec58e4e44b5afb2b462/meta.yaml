@@ -1,0 +1,14 @@
+artifact_uri: file:///C:/Users/user/Desktop/autoB/mlruns/810741880005230675/65fa9fef3ae74ec58e4e44b5afb2b462/artifacts
+end_time: 1758115642868
+entry_point_name: ''
+experiment_id: '810741880005230675'
+lifecycle_stage: active
+run_id: 65fa9fef3ae74ec58e4e44b5afb2b462
+run_name: likeable-hare-466
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1758115611343
+status: 3
+tags: []
+user_id: user
