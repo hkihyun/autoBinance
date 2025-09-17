@@ -4,5 +4,6 @@ __pycache__/
 __pycache__
 # local test scripts
 event_test.py
-backtest_test.py
-data/raw_data/my_test.csv
+backtest_test.__pycache__
+data/raw_data/testing_data.csv
+data/raw_data/training_data.csv
