@@ -45,6 +45,7 @@ def make_array_structure(indexs, df):
         result_segments.append(segment_np)
 
     final_np = np.stack(result_segments)
+    final_np = np.array(final_np, dtype=np.float32)
     final_np = np.round(final_np, 5)
 
     # 결과 확인
