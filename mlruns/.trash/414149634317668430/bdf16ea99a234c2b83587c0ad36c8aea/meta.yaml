@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/user/Desktop/autoB/mlruns/414149634317668430/bdf16ea99a234c2b83587c0ad36c8aea/artifacts
+deleted_time: 1758111551827
+end_time: 1758109820354
+entry_point_name: ''
+experiment_id: '414149634317668430'
+lifecycle_stage: deleted
+run_id: bdf16ea99a234c2b83587c0ad36c8aea
+run_name: whimsical-ant-779
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1758109820252
+status: 4
+tags: []
+user_id: user

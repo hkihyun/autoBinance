@@ -8,7 +8,8 @@ import mlflow.pytorch
 import torch.optim as optim
 import numpy as np
 from model import MODEL_REGISTRY
-
+from pytorch_forecasting import TimeSeriesDataSet
+import pandas as pd
 
 # -------------------
 # 지표 계산 함수
@@ -102,6 +103,8 @@ def train_model(model, train_loader, val_loader, config, device):
                 f"Train SignAcc: {train_sign:.6f}, Val SignAcc: {val_sign:.6f}"
             )
 
+        torch.save(model.state_dict(), f"model/{config['model_name']}_final.pth")
+
         # 최종 모델 저장
         mlflow.pytorch.log_model(model, f"model_{config['model_name']}")
 
@@ -137,6 +140,7 @@ def main():
         y = torch.tensor(y, dtype=torch.float32)
     else:
         X, y = torch.load(config["preprocessed_data_path"])
+
 
     dataset = TensorDataset(X, y)
 

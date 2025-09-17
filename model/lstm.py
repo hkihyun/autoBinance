@@ -19,7 +19,7 @@ class LSTMModel(nn.Module):
             dropout=dropout if num_layers > 1 else 0,
             batch_first=True,
             bidirectional=bidirectional,
-        )
+        )   
         direction_factor = 2 if bidirectional else 1
         self.fc = nn.Linear(hidden_size * direction_factor, output_size)
 

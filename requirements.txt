@@ -1,8 +1,11 @@
 torch
 torchvision
+pytorch-lightning
+pytorch-forecasting
 mlflow
 pandas
 numpy
 scikit-learn
 matplotlib
 schedule
+tensorboard

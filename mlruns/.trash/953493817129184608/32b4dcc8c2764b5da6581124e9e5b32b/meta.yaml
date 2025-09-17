@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/user/Desktop/autoB/mlruns/953493817129184608/32b4dcc8c2764b5da6581124e9e5b32b/artifacts
+deleted_time: 1758111553956
+end_time: 1758107973611
+entry_point_name: ''
+experiment_id: '953493817129184608'
+lifecycle_stage: deleted
+run_id: 32b4dcc8c2764b5da6581124e9e5b32b
+run_name: silent-gull-469
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1758107973499
+status: 4
+tags: []
+user_id: user

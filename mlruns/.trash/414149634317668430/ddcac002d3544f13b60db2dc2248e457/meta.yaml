@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/user/Desktop/autoB/mlruns/414149634317668430/ddcac002d3544f13b60db2dc2248e457/artifacts
+deleted_time: 1758111551827
+end_time: 1758109846788
+entry_point_name: ''
+experiment_id: '414149634317668430'
+lifecycle_stage: deleted
+run_id: ddcac002d3544f13b60db2dc2248e457
+run_name: traveling-kit-677
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1758109846672
+status: 4
+tags: []
+user_id: user

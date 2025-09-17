@@ -1,0 +1,14 @@
+artifact_uri: file:///C:/Users/user/Desktop/autoB/mlruns/967852387580033953/ce8d02908914456283eb353a43e34a97/artifacts
+end_time: 1758099342044
+entry_point_name: ''
+experiment_id: '967852387580033953'
+lifecycle_stage: active
+run_id: ce8d02908914456283eb353a43e34a97
+run_name: masked-dog-809
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1758099247559
+status: 4
+tags: []
+user_id: user

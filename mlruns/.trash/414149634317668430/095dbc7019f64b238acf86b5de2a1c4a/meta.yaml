@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/user/Desktop/autoB/mlruns/414149634317668430/095dbc7019f64b238acf86b5de2a1c4a/artifacts
+deleted_time: 1758111551827
+end_time: 1758110025995
+entry_point_name: ''
+experiment_id: '414149634317668430'
+lifecycle_stage: deleted
+run_id: 095dbc7019f64b238acf86b5de2a1c4a
+run_name: skittish-mink-226
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1758110025897
+status: 4
+tags: []
+user_id: user

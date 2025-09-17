@@ -49,6 +49,16 @@ mlflow ui --port 5000
 
 
 
+## 3. 모델 학습 후 백테스팅 모델 불러오기
+from model import MODEL_REGISTRY
+import torch
+
+config = {...}
+ModelClass = MODEL_REGISTRY[config["model_name"]]
+
+model = ModelClass(**config)
+model.load_state_dict(torch.load(f"model/{config['model_name']}_final.pth", map_location="cpu"))
+model.eval()
 
 
 

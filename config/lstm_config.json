@@ -1,6 +1,6 @@
 {
   "model_name": "lstm",
-  "preprocessed_data_path": "data/precessed_data/sma_cross.npy",
+  "preprocessed_data_path": "data/precessed_data/emacrosss_forreal_lstm.npy",
   "input_size": 5,
   "output_size": 5,
   "hidden_size": 256,
@@ -11,5 +11,6 @@
   "batch_size": 256,
   "epochs": 150,
   "loss": "MSELoss",
-  "optimizer": "AdamW"
+  "optimizer": "AdamW",
+  "dataset_type": "tensor"
 }
