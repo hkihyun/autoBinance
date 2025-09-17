@@ -7,6 +7,7 @@ secret = os.getenv("BINANCE_SECRET_KEY")
 
 import ccxt
 import pandas as pd
+import time
 
 
 def _ohlcv2refined_df(ohlcv):
@@ -51,30 +52,79 @@ def _save_refined_df(df):
     return df
 
 
-def btc_1min_chadle(day = 7):
+def btc_1min_candle(day = 7):
     # Binance 선물 거래소 초기화
     exchange = ccxt.binance({
         'options': {
             'defaultType': 'future',  # 선물 거래소로 설정
         }
     })
+
+    symbol = 'BTC/USDT'
+    timeframe = '1m'
+    total_mins = 1440 * day  # 가져올 총 일 수
+    limit = 1500              # API 한 번 호출 시 최대 개수
+    since = exchange.parse8601('2017-08-17T00:00:00Z')  # BTC/USDT 선물 시작일 근처
+
+    all_ohlcv = []
+
+    # limit 단위로 나눠서 호출
+    while len(all_ohlcv) < total_mins:
+        ohlcv = exchange.fetch_ohlcv(symbol, timeframe=timeframe, since=since, limit=limit)
+        if not ohlcv:
+            break
+
+        all_ohlcv.extend(ohlcv)
+        
+        # 다음 요청을 위해 since 값을 마지막 캔들 이후로 갱신
+        since = ohlcv[-1][0] + 60 * 1000  # 마지막 캔들 다음날 (ms 단위)
+        
+        # API rate limit 보호
+        time.sleep(exchange.rateLimit / 1000)
+
+    # 필요한 개수만큼만 자르기
+    all_ohlcv = all_ohlcv[-total_mins:]
+
     # 차트 데이터 저장하기
-    ohlcv = exchange.fetch_ohlcv('BTC/USDT', timeframe='1m', limit=1440 * day)
-    refined_df = _ohlcv2refined_df(ohlcv)
+    refined_df = _ohlcv2refined_df(all_ohlcv)
     return _save_refined_df(refined_df)
 
 
-def btc_1day_candle(month = 12):
+def btc_1day_candle(month=12):
     # Binance 선물 거래소 초기화
     exchange = ccxt.binance({
         'options': {
             'defaultType': 'future',  # 선물 거래소로 설정
         }
     })
-    # 차트 데이터 가져오기
-    ohlcv = exchange.fetch_ohlcv('BTC/USDT', timeframe='1d', limit=30 * month)
-    refined_df = _ohlcv2refined_df(ohlcv)
+
+    symbol = 'BTC/USDT'
+    timeframe = '1d'
+    total_days = 30 * month  # 가져올 총 일 수
+    limit = 1500              # API 한 번 호출 시 최대 개수
+    since = exchange.parse8601('2017-08-17T00:00:00Z')  # BTC/USDT 선물 시작일 근처
+
+    all_ohlcv = []
+
+    # limit 단위로 나눠서 호출
+    while len(all_ohlcv) < total_days:
+        ohlcv = exchange.fetch_ohlcv(symbol, timeframe=timeframe, since=since, limit=limit)
+        if not ohlcv:
+            break
+
+        all_ohlcv.extend(ohlcv)
+        
+        # 다음 요청을 위해 since 값을 마지막 캔들 이후로 갱신
+        since = ohlcv[-1][0] + 24 * 60 * 60 * 1000  # 마지막 캔들 다음날 (ms 단위)
+        
+        # API rate limit 보호
+        time.sleep(exchange.rateLimit / 1000)
+
+    # 필요한 개수만큼만 자르기
+    all_ohlcv = all_ohlcv[-total_days:]
+
+    refined_df = _ohlcv2refined_df(all_ohlcv)
     return _save_refined_df(refined_df)
 
 if __name__=='__main__':
-    print(btc_1min_chadle(900))
+    print(btc_1min_candle())
