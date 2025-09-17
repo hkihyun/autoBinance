@@ -1,0 +1,14 @@
+artifact_uri: file:///C:/Users/user/Desktop/autoB/mlruns/810741880005230675/7527b8ae3ec147b28c5f9aa60d9b3656/artifacts
+end_time: 1758114996506
+entry_point_name: ''
+experiment_id: '810741880005230675'
+lifecycle_stage: active
+run_id: 7527b8ae3ec147b28c5f9aa60d9b3656
+run_name: brawny-auk-80
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1758114996352
+status: 4
+tags: []
+user_id: user

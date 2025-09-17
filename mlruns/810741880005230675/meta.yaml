@@ -1,0 +1,6 @@
+artifact_location: file:///C:/Users/user/Desktop/autoB/mlruns/810741880005230675
+creation_time: 1758114995753
+experiment_id: '810741880005230675'
+last_update_time: 1758114995753
+lifecycle_stage: active
+name: tfmodel_prediction

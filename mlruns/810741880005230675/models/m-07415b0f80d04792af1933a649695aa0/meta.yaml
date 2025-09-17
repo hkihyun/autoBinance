@@ -1,0 +1,10 @@
+artifact_location: file:///C:/Users/user/Desktop/autoB/mlruns/810741880005230675/models/m-07415b0f80d04792af1933a649695aa0/artifacts
+creation_timestamp: 1758115317046
+experiment_id: '810741880005230675'
+last_updated_timestamp: 1758115331123
+model_id: m-07415b0f80d04792af1933a649695aa0
+model_type: null
+name: model_tfmodel
+source_run_id: 744d2ad0406a40a7a41a907181018679
+status: 2
+status_message: null

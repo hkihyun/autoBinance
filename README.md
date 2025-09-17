@@ -1,4 +1,4 @@
-## 1. Config 작성법 예시
+**## 1. Config 작성법 예시
 
 모델 학습/예측에 필요한 모든 설정은 JSON 파일(`config/*.json`)로 관리합니다.
 
@@ -83,3 +83,6 @@ detector.save_events(events, "data/precessed_data/events.npy")
 
 
 
+## 백테스트 실행법
+
+python backtest.py --config config/backtest_config.json
