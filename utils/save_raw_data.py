@@ -52,7 +52,7 @@ def _save_refined_df(df):
     return df
 
 
-def btc_1min_candle(day = 7):
+def btc_1min_candle(day):
     # Binance 선물 거래소 초기화
     exchange = ccxt.binance({
         'options': {
@@ -65,6 +65,7 @@ def btc_1min_candle(day = 7):
     total_mins = 1440 * day  # 가져올 총 일 수
     limit = 1500              # API 한 번 호출 시 최대 개수
     since = exchange.parse8601('2017-08-17T00:00:00Z')  # BTC/USDT 선물 시작일 근처
+    # since = exchange.parse8601('2022-02-24T00:00:00Z')  # BTC/USDT 선물 시작일 근처
 
     all_ohlcv = []
 
@@ -91,8 +92,6 @@ def btc_1min_candle(day = 7):
     # 차트 데이터 저장하기
     refined_df = _ohlcv2refined_df(all_ohlcv)
     return _save_refined_df(refined_df)
-
-
 def btc_1day_candle(month=12):
     # Binance 선물 거래소 초기화
     exchange = ccxt.binance({
@@ -130,5 +129,87 @@ def btc_1day_candle(month=12):
     refined_df = _ohlcv2refined_df(all_ohlcv)
     return _save_refined_df(refined_df)
 
+
+def btc_1min_training_data():
+    # Binance 선물 거래소 초기화
+    exchange = ccxt.binance({
+        'options': {
+            'defaultType': 'future',  # 선물 거래소로 설정
+        }
+    })
+
+    symbol = 'BTC/USDT'
+    timeframe = '1m'
+    total_mins = 1440 * 1800  # 가져올 총 일 수
+    limit = 1500              # API 한 번 호출 시 최대 개수
+    since = exchange.parse8601('2017-08-17T00:00:00Z')  # BTC/USDT 선물 시작일 근처
+    # since = exchange.parse8601('2022-02-24T00:00:00Z')  # BTC/USDT 선물 시작일 근처
+
+    all_ohlcv = []
+
+    # limit 단위로 나눠서 호출
+    while len(all_ohlcv) < total_mins:
+        ohlcv = exchange.fetch_ohlcv(symbol, timeframe=timeframe, since=since, limit=limit)
+        if not ohlcv:
+            break
+
+        all_ohlcv.extend(ohlcv)
+        
+        # 다음 요청을 위해 since 값을 마지막 캔들 이후로 갱신
+        since = ohlcv[-1][0] + 60 * 1000  # 마지막 캔들 다음날 (ms 단위)
+        
+        # API rate limit 보호
+        time.sleep(exchange.rateLimit / 1000)
+
+        # 진행상황 표시
+        print(f"----------------      {round(len(all_ohlcv)/total_mins*100)}%...      ----------------")
+
+    # 필요한 개수만큼만 자르기
+    all_ohlcv = all_ohlcv[-total_mins:]
+
+    # 차트 데이터 저장하기
+    refined_df = _ohlcv2refined_df(all_ohlcv)
+    return _save_refined_df(refined_df)
+def btc_1min_testing_data():
+    # Binance 선물 거래소 초기화
+    exchange = ccxt.binance({
+        'options': {
+            'defaultType': 'future',  # 선물 거래소로 설정
+        }
+    })
+
+    symbol = 'BTC/USDT'
+    timeframe = '1m'
+    total_mins = 1440 * 300  # 가져올 총 일 수
+    limit = 1500              # API 한 번 호출 시 최대 개수
+    since = exchange.parse8601('2024-08-13T00:00:00Z')  # BTC/USDT 선물 시작일 근처
+
+    all_ohlcv = []
+
+    # limit 단위로 나눠서 호출
+    while len(all_ohlcv) < total_mins:
+        ohlcv = exchange.fetch_ohlcv(symbol, timeframe=timeframe, since=since, limit=limit)
+        if not ohlcv:
+            break
+
+        all_ohlcv.extend(ohlcv)
+        
+        # 다음 요청을 위해 since 값을 마지막 캔들 이후로 갱신
+        since = ohlcv[-1][0] + 60 * 1000  # 마지막 캔들 다음날 (ms 단위)
+        
+        # API rate limit 보호
+        time.sleep(exchange.rateLimit / 1000)
+
+        # 진행상황 표시
+        print(f"----------------      {round(len(all_ohlcv)/total_mins*100)}%...      ----------------")
+
+    # 필요한 개수만큼만 자르기
+    all_ohlcv = all_ohlcv[-total_mins:]
+
+    # 차트 데이터 저장하기
+    refined_df = _ohlcv2refined_df(all_ohlcv)
+    return _save_refined_df(refined_df)
+
+
 if __name__=='__main__':
-    print(btc_1min_candle(900))
+    btc_1min_testing_data()

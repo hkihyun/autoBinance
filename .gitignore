@@ -5,3 +5,4 @@ __pycache__
 # local test scripts
 event_test.py
 backtest_test.py
+data/raw_data/my_test.csv

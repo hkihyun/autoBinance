@@ -1,6 +1,6 @@
 {
-  "model_name": "tfmodel",
-  "preprocessed_data_path": "data/backtest.npy",
+  "model_name": "lstm",
+  "preprocessed_data_path": "data/precessed_data/backtest.npy",
   "input_size": 5,
   "output_size": 5,
   "hidden_size": 128,
@@ -16,6 +16,6 @@
   "take_profit": 0.02,     
   "holding_period": 5,
   
-  "model_path": "model/tfmodel_final.pth"
+  "model_path": "model/lstm_final.pth"
 
 }
