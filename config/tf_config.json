@@ -1,9 +1,9 @@
 {
-  "model_name": "tf",
+  "model_name": "tfmodel",
   "preprocessed_data_path": "data/precessed_data/emacrosss_forreal_lstm.npy",
   "input_size": 5,
   "output_size": 5,
-  "hidden_size": 128,
+  "hidden_size": 256,
   "num_layers": 4,
   "num_heads": 8,
   "dropout": 0.1,
@@ -12,6 +12,6 @@
   "epochs": 50,
   "loss": "MSELoss",
   "optimizer": "AdamW",
-  "seq_len": "32",
-  "max_seq_len": "512"
+  "seq_len": 32,
+  "max_seq_len": 512
 }

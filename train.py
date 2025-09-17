@@ -11,6 +11,25 @@ from model import MODEL_REGISTRY
 from pytorch_forecasting import TimeSeriesDataSet
 import pandas as pd
 
+
+# -------------------
+# SequenceDataset 정의
+# -------------------
+class SequenceDataset(torch.utils.data.Dataset):
+    def __init__(self, X, y, seq_len):
+        self.X = X
+        self.y = y
+        self.seq_len = seq_len
+
+    def __len__(self):
+        return len(self.X) - self.seq_len
+
+    def __getitem__(self, idx):
+        x_seq = self.X[idx:idx+self.seq_len]          # (seq_len, input_size)
+        y_seq = self.y[idx+self.seq_len]              # (output_size,)
+        return x_seq, y_seq
+
+
 # -------------------
 # 지표 계산 함수
 # -------------------
@@ -130,19 +149,18 @@ def main():
     # -------------------
     # 3. 데이터셋 로드 
     # -------------------
-
     if config["preprocessed_data_path"].endswith(".npy"):
         arr = np.load(config["preprocessed_data_path"], allow_pickle=True)
         X, y = arr[0], arr[1]
-
-        # numpy → torch 변환
         X = torch.tensor(X, dtype=torch.float32)
         y = torch.tensor(y, dtype=torch.float32)
     else:
         X, y = torch.load(config["preprocessed_data_path"])
 
-
-    dataset = TensorDataset(X, y)
+    if model_name in ["tfmodel"]:   # Transformer류 모델이면 SequenceDataset 사용
+        dataset = SequenceDataset(X, y, config["seq_len"])
+    else:
+        dataset = TensorDataset(X, y)
 
     train_size = int(0.8 * len(dataset))
     val_size = len(dataset) - train_size
@@ -150,6 +168,7 @@ def main():
 
     train_loader = DataLoader(train_ds, batch_size=config["batch_size"], shuffle=True)
     val_loader = DataLoader(val_ds, batch_size=config["batch_size"])
+
 
     # -------------------
     # 4. 모델 생성
