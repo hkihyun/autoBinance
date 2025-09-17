@@ -6,6 +6,7 @@ from torch.utils.data import DataLoader, random_split, TensorDataset
 import mlflow
 import mlflow.pytorch
 import torch.optim as optim
+import numpy as np
 from model import MODEL_REGISTRY
 
 
@@ -126,7 +127,17 @@ def main():
     # -------------------
     # 3. 데이터셋 로드 
     # -------------------
-    X, y = torch.load(config["preprocessed_data_path"])
+
+    if config["preprocessed_data_path"].endswith(".npy"):
+        arr = np.load(config["preprocessed_data_path"], allow_pickle=True)
+        X, y = arr[0], arr[1]
+
+        # numpy → torch 변환
+        X = torch.tensor(X, dtype=torch.float32)
+        y = torch.tensor(y, dtype=torch.float32)
+    else:
+        X, y = torch.load(config["preprocessed_data_path"])
+
     dataset = TensorDataset(X, y)
 
     train_size = int(0.8 * len(dataset))

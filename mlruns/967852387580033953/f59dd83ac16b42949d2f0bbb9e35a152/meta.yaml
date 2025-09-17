@@ -1,0 +1,14 @@
+artifact_uri: file:///C:/Users/user/Desktop/autoB/mlruns/967852387580033953/f59dd83ac16b42949d2f0bbb9e35a152/artifacts
+end_time: 1758092358796
+entry_point_name: ''
+experiment_id: '967852387580033953'
+lifecycle_stage: active
+run_id: f59dd83ac16b42949d2f0bbb9e35a152
+run_name: delicate-ram-260
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1758092358634
+status: 4
+tags: []
+user_id: user

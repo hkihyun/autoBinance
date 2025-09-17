@@ -29,3 +29,12 @@ class LSTMModel(nn.Module):
         hn = hn[-1]  # 마지막 레이어 hidden state
         out = self.fc(hn)  # (batch, output_size)
         return out
+
+
+
+# -------------------
+# 모델 레지스트리 등록
+# -------------------
+MODEL_REGISTRY = {
+    "lstm": LSTMModel,
+}

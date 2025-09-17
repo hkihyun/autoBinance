@@ -1,0 +1,10 @@
+artifact_location: file:///C:/Users/user/Desktop/autoB/mlruns/967852387580033953/models/m-d0db877682a54670bbde4b9d0755d6be/artifacts
+creation_timestamp: 1758092423644
+experiment_id: '967852387580033953'
+last_updated_timestamp: 1758092435190
+model_id: m-d0db877682a54670bbde4b9d0755d6be
+model_type: null
+name: model_lstm
+source_run_id: 94beddc017eb45989824329635d224d3
+status: 2
+status_message: null

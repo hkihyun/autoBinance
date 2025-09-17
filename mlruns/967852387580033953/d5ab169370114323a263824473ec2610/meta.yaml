@@ -1,0 +1,14 @@
+artifact_uri: file:///C:/Users/user/Desktop/autoB/mlruns/967852387580033953/d5ab169370114323a263824473ec2610/artifacts
+end_time: 1758092963225
+entry_point_name: ''
+experiment_id: '967852387580033953'
+lifecycle_stage: active
+run_id: d5ab169370114323a263824473ec2610
+run_name: bold-hen-914
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1758092941723
+status: 4
+tags: []
+user_id: user
