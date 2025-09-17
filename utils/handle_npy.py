@@ -21,10 +21,14 @@ class HandleNpy():
         self.npy_file = None
         self.df_file = None
 
-    def df2npy(self, df : pd.DataFrame):
+    def df2npy(self, df : np.array):
         # timestamp 컬럼 제거하고 값만 추출
         values_only = df.drop(columns=['timestamp']).to_numpy()
         self.npy_file = values_only
+        return
+    
+    def save_np(self, np):
+        self.npy_file = np
         return
     
     def save_npy(self, file_name: str):

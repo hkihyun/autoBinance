@@ -86,3 +86,4 @@ def raw_data_to_ema_precess_data(df):
     print(final_np.shape)
     # 결과 확인
     print(final_np)
+    return final_np
