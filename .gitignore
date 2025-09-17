@@ -7,3 +7,5 @@ event_test.py
 backtest_test.__pycache__
 data/raw_data/testing_data.csv
 data/raw_data/training_data.csv
+data/raw_data/my_test.csv
+data/precessed_data/emacross_lstm_training.npy
