@@ -61,5 +61,16 @@ model.load_state_dict(torch.load(f"model/{config['model_name']}_final.pth", map_
 model.eval()
 
 
+========== event detect ==========
+from event.strategy.ema_cross import EmaCrossStrategy
+from event.interface import DetectEvent
+
+strategy = EmaCrossStrategy()
+detector = DetectEvent(strategy)
+
+raw = detector.load_raw_data("data/raw_data/minute_data.npy")
+events = detector.find_events(raw)
+detector.save_events(events, "data/precessed_data/events.npy")
+
 
 
