@@ -13,7 +13,8 @@ import matplotlib.pyplot as plt
 # 1. 모델 예측 기반 성능 평가
 # -------------------
 def backtest_model(model, loader, config, device):
-    model.eval()
+    model.eval() # 평가 모드
+    # 모델 예측값, 실제 결과
     all_preds, all_targets = [], []
 
     with torch.no_grad():
@@ -27,6 +28,7 @@ def backtest_model(model, loader, config, device):
     all_preds = torch.cat(all_preds)
     all_targets = torch.cat(all_targets)
 
+    # 평가 기준
     mae, rmse, sign_acc = compute_metrics(all_targets, all_preds)
 
     print(

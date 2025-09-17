@@ -21,19 +21,19 @@ def make_array_structure(indexs, df):
         # 이전 40개 구간
         prev_segment = df.iloc[start:idx+1].copy()
         base_price_prev = prev_segment.iloc[0]['open']
-        prev_segment['open'] = (prev_segment['open'] / base_price_prev - 1) * 100  # 퍼센트(%)
-        prev_segment['close'] = (prev_segment['close'] / base_price_prev - 1) * 100  # 퍼센트(%)
-        prev_segment['high'] = (prev_segment['high'] / base_price_prev - 1) * 100  # 퍼센트(%)
-        prev_segment['low'] = (prev_segment['low'] / base_price_prev - 1) * 100  # 퍼센트(%)
+        prev_segment['open'] = (prev_segment['open'] / base_price_prev) 
+        prev_segment['close'] = (prev_segment['close'] / base_price_prev) 
+        prev_segment['high'] = (prev_segment['high'] / base_price_prev) 
+        prev_segment['low'] = (prev_segment['low'] / base_price_prev) 
         prev_segment.drop(columns=['timestamp'], inplace=True) # timestamp column 제거
 
         # 이후 5개 구간
         after_segment = df.iloc[after_start:after_end].copy()
         base_price_after = after_segment.iloc[0]['open']
-        after_segment['open'] = (after_segment['open'] / base_price_after - 1) * 100  # 퍼센트(%)
-        after_segment['close'] = (after_segment['close'] / base_price_after - 1) * 100  # 퍼센트(%)
-        after_segment['high'] = (after_segment['high'] / base_price_after - 1) * 100  # 퍼센트(%)
-        after_segment['low'] = (after_segment['low'] / base_price_after - 1) * 100  # 퍼센트(%)
+        after_segment['open'] = (after_segment['open'] / base_price_after) 
+        after_segment['close'] = (after_segment['close'] / base_price_after) 
+        after_segment['high'] = (after_segment['high'] / base_price_after) 
+        after_segment['low'] = (after_segment['low'] / base_price_after) 
         end = after_segment['open'].to_frame().T
 
         # 두 구간을 numpy 배열로 변환
