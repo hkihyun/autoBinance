@@ -4,3 +4,4 @@ __pycache__/
 __pycache__
 # local test scripts
 event_test.py
+backtest_test.py
