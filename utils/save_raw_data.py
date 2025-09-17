@@ -82,6 +82,9 @@ def btc_1min_candle(day = 7):
         # API rate limit 보호
         time.sleep(exchange.rateLimit / 1000)
 
+        # 진행상황 표시
+        print(f"----------------      {round(len(all_ohlcv)/total_mins*100)}%...      ----------------")
+
     # 필요한 개수만큼만 자르기
     all_ohlcv = all_ohlcv[-total_mins:]
 
@@ -119,6 +122,7 @@ def btc_1day_candle(month=12):
         
         # API rate limit 보호
         time.sleep(exchange.rateLimit / 1000)
+        print(f"----------------      {round(len(all_ohlcv)/total_days*100)}%...      ----------------")
 
     # 필요한 개수만큼만 자르기
     all_ohlcv = all_ohlcv[-total_days:]
@@ -127,4 +131,4 @@ def btc_1day_candle(month=12):
     return _save_refined_df(refined_df)
 
 if __name__=='__main__':
-    print(btc_1min_candle())
+    print(btc_1min_candle(900))

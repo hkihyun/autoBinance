@@ -37,5 +37,5 @@ class EmaCrossStrategy():
                 cross_indices.append(i)
         df.drop(columns=['ema_5'], inplace=True)
         df.drop(columns=['ema_20'], inplace=True)
-        # print(len(cross_indices))
+        print(len(cross_indices))
         return cross_indices
