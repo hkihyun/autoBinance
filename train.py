@@ -151,7 +151,7 @@ def main():
     # -------------------
     if config["preprocessed_data_path"].endswith(".npy"):
         arr = np.load(config["preprocessed_data_path"], allow_pickle=True)
-        X, y = arr[0], arr[1]
+        X, y =  arr[:, :-1, :], arr[:, -1, :]
         X = torch.tensor(X, dtype=torch.float32)
         y = torch.tensor(y, dtype=torch.float32)
     else:

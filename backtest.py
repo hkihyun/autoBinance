@@ -49,12 +49,6 @@ def trading_backtest(preds, targets,
     if isinstance(targets, torch.Tensor):
         targets = targets.numpy()
 
-    # 추가된 부분: preds와 targets가 다차원일 경우 첫 번째 피처 선택
-    if preds.ndim > 1:
-        preds = preds[:, 0]
-    if targets.ndim > 1:
-        targets = targets[:, 0]
-
     n = len(preds)
     equity = 1.0   # 초기 자본 (100%)
     trades = []
@@ -148,8 +142,8 @@ def main():
 
     # 데이터셋 로드
     if config["preprocessed_data_path"].endswith(".npy"):
-        arr = np.load(config["preprocessed_data_path"], allow_pickle=True)
-        X, y = arr[0], arr[1]
+        arr = np.load(config["preprocessed_data_path"], allow_pickle=True) # shape: (_, 41, 5)
+        X, y =  arr[:, :-1, :], arr[:, -1, :]  
         X = torch.tensor(X, dtype=torch.float32)
         y = torch.tensor(y, dtype=torch.float32)
     else:
@@ -173,10 +167,10 @@ def main():
     # 2) 거래 시뮬레이션 (config)
     final_equity, trade_log, equity_curve = trading_backtest(
         preds, targets,
-        buy_threshold=config.get("buy_threshold", 0.005),
-        stop_loss=config.get("stop_loss", -0.01),
-        take_profit=config.get("take_profit", 0.02),
-        holding_period=config.get("holding_period", 5)
+        buy_threshold=config.get("buy_threshold"),
+        stop_loss=config.get("stop_loss"),
+        take_profit=config.get("take_profit"),
+        holding_period=config.get("holding_period")
     )
 
     print(f"[Trading Backtest] 최종 누적 수익률: {(final_equity-1)*100:.2f}%")
