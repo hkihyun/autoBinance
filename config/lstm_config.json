@@ -1,6 +1,6 @@
 {
   "model_name": "lstm",
-  "preprocessed_data_path": "data/precessed_data/emacrosss_forreal_lstm.npy",
+  "preprocessed_data_path": "data/precessed_data/emacross_lstm_training.npy",
   "input_size": 5,
   "output_size": 5,
   "hidden_size": 256,

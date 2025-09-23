@@ -13,7 +13,8 @@ import matplotlib.pyplot as plt
 # 1. 모델 예측 기반 성능 평가
 # -------------------
 def backtest_model(model, loader, config, device):
-    model.eval()
+    model.eval() # 평가 모드
+    # 모델 예측값, 실제 결과
     all_preds, all_targets = [], []
 
     with torch.no_grad():
@@ -27,6 +28,7 @@ def backtest_model(model, loader, config, device):
     all_preds = torch.cat(all_preds)
     all_targets = torch.cat(all_targets)
 
+    # 평가 기준
     mae, rmse, sign_acc = compute_metrics(all_targets, all_preds)
 
     print(
@@ -142,9 +144,8 @@ def main():
 
     # 데이터셋 로드
     if config["preprocessed_data_path"].endswith(".npy"):
-        arr = np.load(config["preprocessed_data_path"], allow_pickle=True)
-        arr = arr / 100 
-        X, y = arr[0], arr[1]
+        arr = np.load(config["preprocessed_data_path"], allow_pickle=True) # shape: (_, 41, 5)
+        X, y =  arr[:, :-1, :], arr[:, -1, :]  
         X = torch.tensor(X, dtype=torch.float32)
         y = torch.tensor(y, dtype=torch.float32)
         print("X shape: ", X.shape)
@@ -170,10 +171,10 @@ def main():
     # 2) 거래 시뮬레이션 (config)
     final_equity, trade_log, equity_curve = trading_backtest(
         preds, targets,
-        buy_threshold=config.get("buy_threshold", 0.005),
-        stop_loss=config.get("stop_loss", -0.01),
-        take_profit=config.get("take_profit", 0.02),
-        holding_period=config.get("holding_period", 5)
+        buy_threshold=config.get("buy_threshold"),
+        stop_loss=config.get("stop_loss"),
+        take_profit=config.get("take_profit"),
+        holding_period=config.get("holding_period")
     )
 
     print(f"[Trading Backtest] 최종 누적 수익률: {(final_equity-1)*100:.2f}%")

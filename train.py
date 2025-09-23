@@ -10,7 +10,7 @@ import numpy as np
 from model import MODEL_REGISTRY
 from pytorch_forecasting import TimeSeriesDataSet
 import pandas as pd
-
+from tqdm import tqdm
 
 # -------------------
 # SequenceDataset 정의
@@ -64,7 +64,8 @@ def train_model(model, train_loader, val_loader, config, device):
             # ---- Training ----
             model.train()
             train_loss, train_mae, train_rmse, train_sign = 0, 0, 0, 0
-            for Xb, yb in train_loader:
+
+            for Xb, yb in tqdm(train_loader, desc=f"Epoch {epoch+1}/{config['epochs']} Training", leave=False):
                 Xb, yb = Xb.to(device), yb.to(device)
 
                 optimizer.zero_grad()
@@ -79,6 +80,7 @@ def train_model(model, train_loader, val_loader, config, device):
                 train_rmse += rmse * Xb.size(0)
                 train_sign += sign_acc * Xb.size(0)
 
+            # 평균값 계산
             train_loss /= len(train_loader.dataset)
             train_mae /= len(train_loader.dataset)
             train_rmse /= len(train_loader.dataset)
@@ -114,6 +116,7 @@ def train_model(model, train_loader, val_loader, config, device):
             mlflow.log_metric("train_sign_acc", train_sign, step=epoch)
             mlflow.log_metric("val_sign_acc", val_sign, step=epoch)
 
+            # ---- 에포크 단위 출력 ----
             print(
                 f"Epoch {epoch+1}/{config['epochs']} | "
                 f"Train Loss: {train_loss:.6f}, Val Loss: {val_loss:.6f} | "
@@ -123,9 +126,8 @@ def train_model(model, train_loader, val_loader, config, device):
             )
 
         torch.save(model.state_dict(), f"model/{config['model_name']}_final.pth")
-
-        # 최종 모델 저장
         mlflow.pytorch.log_model(model, f"model_{config['model_name']}")
+
 
 
 
@@ -151,7 +153,7 @@ def main():
     # -------------------
     if config["preprocessed_data_path"].endswith(".npy"):
         arr = np.load(config["preprocessed_data_path"], allow_pickle=True)
-        X, y = arr[0], arr[1]
+        X, y =  arr[:, :-1, :], arr[:, -1, :]
         X = torch.tensor(X, dtype=torch.float32)
         y = torch.tensor(y, dtype=torch.float32)
     else:
