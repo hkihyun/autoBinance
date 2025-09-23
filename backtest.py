@@ -55,15 +55,15 @@ def trading_backtest(preds, targets,
     i = 0
     while i < n:
         # 매수 조건
-        if preds[i] > buy_threshold:
+        if preds[i].mean() > buy_threshold:   # preds도 다차원일 수 있으니 평균
             entry_idx = i
-            entry_pred = preds[i]
+            entry_pred = preds[i].mean().item()
             exit_idx = None
             exit_type = None
             exit_ret = 0.0
 
             for j in range(i+1, min(i+holding_period, n)):
-                ret = targets[j]
+                ret = targets[j].mean().item()   # ✅ 평균 수익률 사용
 
                 if ret < stop_loss:
                     equity *= (1 + ret)
@@ -81,7 +81,7 @@ def trading_backtest(preds, targets,
 
             if exit_idx is None:
                 exit_idx = min(i+holding_period-1, n-1)
-                ret = targets[exit_idx]
+                ret = targets[exit_idx].mean().item()   # ✅ 평균 수익률 사용
                 equity *= (1 + ret)
                 exit_type = "TIME_EXIT"
                 exit_ret = ret
@@ -108,6 +108,8 @@ def trading_backtest(preds, targets,
             i += 1
 
     return equity, trades, equity_curve
+
+
 
 
 # 에쿼티 커브 시각화 함수
@@ -141,9 +143,12 @@ def main():
     # 데이터셋 로드
     if config["preprocessed_data_path"].endswith(".npy"):
         arr = np.load(config["preprocessed_data_path"], allow_pickle=True)
+        arr = arr / 100 
         X, y = arr[0], arr[1]
         X = torch.tensor(X, dtype=torch.float32)
         y = torch.tensor(y, dtype=torch.float32)
+        print("X shape: ", X.shape)
+        print("y shape: ", y.shape)
     else:
         X, y = torch.load(config["preprocessed_data_path"])
 
