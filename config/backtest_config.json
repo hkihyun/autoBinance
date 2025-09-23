@@ -3,7 +3,7 @@
   "preprocessed_data_path": "data/precessed_data/emacross_lstm_testing.npy",
   "input_size": 5,
   "output_size": 5,
-  "hidden_size": 128,
+  "hidden_size": 256,
   "num_layers": 4,
   "num_heads": 8,
   "dropout": 0.1,

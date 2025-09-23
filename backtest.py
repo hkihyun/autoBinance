@@ -49,6 +49,12 @@ def trading_backtest(preds, targets,
     if isinstance(targets, torch.Tensor):
         targets = targets.numpy()
 
+    # 추가된 부분: preds와 targets가 다차원일 경우 첫 번째 피처 선택
+    if preds.ndim > 1:
+        preds = preds[:, 0]
+    if targets.ndim > 1:
+        targets = targets[:, 0]
+
     n = len(preds)
     equity = 1.0   # 초기 자본 (100%)
     trades = []
