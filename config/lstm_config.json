@@ -9,7 +9,7 @@
   "bidirectional": false,
   "learning_rate": 0.001,
   "batch_size": 256,
-  "epochs": 50,
+  "epochs": 10,
   "loss": "MSELoss",
   "optimizer": "AdamW",
   "dataset_type": "tensor"

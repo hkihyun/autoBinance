@@ -41,7 +41,7 @@ preprocessed_data_path: 학습용 데이터셋 경로 (torch.save((X,y))로 저�
 모델 학습 
 python train.py --config config/ 원하는 모델의 config.json
 ex)
-python train.py --config config/lstm_config.json
+python3 train.py --config config/lstm_config.json
 
 ml flow
 mlflow ui --port 5000
