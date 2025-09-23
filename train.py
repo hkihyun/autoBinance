@@ -175,7 +175,10 @@ def main():
     # -------------------
     # 4. 모델 생성
     # -------------------
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    if torch.backends.mps.is_available():
+        device = torch.device("mps")
+    else:
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model = ModelClass(**config).to(device)
 
     train_model(model, train_loader, val_loader, config, device)
