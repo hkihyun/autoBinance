@@ -14,9 +14,9 @@
   "max_seq_len": 512,
   "pred_len": 5,
  
-  "buy_threshold": 1.007,   
+  "buy_threshold": 1.0076,   
   "stop_loss": 0.9995,    
-  "take_profit": 1.0008,     
+  "take_profit": 1.0010,     
   "holding_period": 5,
   
   "model_path": "model/tftmodel_final.pth"
