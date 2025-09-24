@@ -25,8 +25,8 @@ def backtest_model(model, loader, config, device):
             all_preds.append(preds.cpu())
             all_targets.append(yb.cpu())
 
-    all_preds = torch.cat(all_preds)
-    all_targets = torch.cat(all_targets)
+    all_preds = torch.cat(all_preds) # (N, output_dim)
+    all_targets = torch.cat(all_targets) # (N, target_dim)
 
     # 평가 기준
     mae, rmse, sign_acc = compute_metrics(all_targets, all_preds)
@@ -49,12 +49,12 @@ def trading_backtest(preds, targets,
     if isinstance(targets, torch.Tensor):
         targets = targets.numpy()
 
-    n = len(preds)
     equity = 1.0   # 초기 자본 (100%)
     trades = []
     equity_curve = [equity]   # 자본 추이 저장
 
     i = 0
+    n = len(preds) # 5
     while i < n:
         # 매수 조건
         if preds[i].mean() > buy_threshold:   # preds도 다차원일 수 있으니 평균
@@ -94,14 +94,14 @@ def trading_backtest(preds, targets,
                 exit_idx,
                 float(entry_pred),
                 float(exit_ret),
-                float(exit_ret * 100),
+                float(exit_ret),
                 float(equity)
             ))
 
             # 실시간 거래 로그 출력
             print(f"[거래 발생] {exit_type} | 진입={entry_idx}, 청산={exit_idx}, "
                   f"예측={entry_pred:.4f}, 실제={exit_ret:.4f}, "
-                  f"수익률={exit_ret*100:.2f}%, 자본={equity:.4f}")
+                  f"수익률={exit_ret:.2f}%, 자본={equity:.4f}")
 
             equity_curve.append(equity)   #  자본 업데이트 기록
 
@@ -148,8 +148,8 @@ def main():
         X, y =  arr[:, :-1, :], arr[:, -1, :]  
         X = torch.tensor(X, dtype=torch.float32)
         y = torch.tensor(y, dtype=torch.float32)
-        print("X shape: ", X.shape)
-        print("y shape: ", y.shape)
+        # print("X shape: ", X.shape)
+        # print("y shape: ", y.shape)
     else:
         X, y = torch.load(config["preprocessed_data_path"])
 
@@ -161,7 +161,11 @@ def main():
     loader = DataLoader(dataset, batch_size=config["batch_size"], shuffle=False)
 
     # 모델 로드
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    # device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    if torch.backends.mps.is_available():
+        device = torch.device("mps")
+    else:
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model = ModelClass(**config).to(device)
     model.load_state_dict(torch.load(config["model_path"], map_location=device))
 
