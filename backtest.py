@@ -42,8 +42,7 @@ def backtest_model(model, loader, config, device):
 # -------------------
 # 2. 거래 시뮬레이션 함수
 # -------------------
-def trading_backtest(preds, targets,
-                     buy_threshold, stop_loss, take_profit, holding_period):
+def trading_backtest(preds, targets, buy_threshold, stop_loss, take_profit, holding_period):
     if isinstance(preds, torch.Tensor):
         preds = preds.numpy()
     if isinstance(targets, torch.Tensor):
@@ -54,58 +53,52 @@ def trading_backtest(preds, targets,
     equity_curve = [equity]   # 자본 추이 저장
 
     i = 0
-    n = len(preds) # 5
+    n = len(preds) # 데이터 길이
     while i < n:
         # 매수 조건
-        if preds[i].mean() > buy_threshold:   # preds도 다차원일 수 있으니 평균
-            entry_idx = i
-            entry_pred = preds[i].mean().item()
-            exit_idx = None
+        if preds[i].mean().item() > buy_threshold:   # preds도 다차원일 수 있으니 평균
+            idx = i
+            pred = preds[i].mean().item()  # 평균 예측값
             exit_type = None
             exit_ret = 0.0
 
-            for j in range(i+1, min(i+holding_period, n)):
-                ret = targets[j].mean().item()   # ✅ 평균 수익률 사용
+            # 청산 조건 체크
+            ret = targets[i].mean().item()   # ✅ 평균 수익률 사용
 
-                if ret < stop_loss:
-                    equity *= (1 + ret)
-                    exit_idx = j
-                    exit_type = "STOP_LOSS"
-                    exit_ret = ret
-                    break
+            if ret < stop_loss:
+                equity = equity * (ret * 10 - 9)
+                exit_type = "STOP_LOSS"
+                exit_ret = ret
+                print(f'----------{ret}----------')
 
-                if ret > take_profit:
-                    equity *= (1 + ret)
-                    exit_idx = j
-                    exit_type = "TAKE_PROFIT"
-                    exit_ret = ret
-                    break
+            elif ret >= take_profit:
+                equity = equity * (ret * 10 - 9)
+                exit_type = "TAKE_PROFIT"
+                exit_ret = ret
 
-            if exit_idx is None:
-                exit_idx = min(i+holding_period-1, n-1)
-                ret = targets[exit_idx].mean().item()   # ✅ 평균 수익률 사용
-                equity *= (1 + ret)
+            # 기간 종료로 청산
+            else:
+                equity = equity * (ret * 10 - 9) # 10배 레버리지 가정, 소수점 5자리
                 exit_type = "TIME_EXIT"
                 exit_ret = ret
 
             trades.append((
                 exit_type,
-                entry_idx,
-                exit_idx,
-                float(entry_pred),
-                float(exit_ret),
+                idx,
+                float(pred),
                 float(exit_ret),
                 float(equity)
             ))
 
             # 실시간 거래 로그 출력
-            print(f"[거래 발생] {exit_type} | 진입={entry_idx}, 청산={exit_idx}, "
-                  f"예측={entry_pred:.4f}, 실제={exit_ret:.4f}, "
-                  f"수익률={exit_ret:.2f}%, 자본={equity:.4f}")
+            print(f"[거래 발생] {exit_type} | 거래 인덱스={idx}"
+                  f"예측={pred:.4f}, 실제={exit_ret:.4f}, "
+                  f"수익률={exit_ret:.4f}, 자본={equity:.4f}")
 
             equity_curve.append(equity)   #  자본 업데이트 기록
 
-            i = exit_idx + 1
+            i += 1  # 다음 인덱스로 이동
+
         else:
             i += 1
 
