@@ -37,7 +37,11 @@ class SequenceDataset(torch.utils.data.Dataset):
 # 지표 계산 함수
 # -------------------
 def compute_metrics(y_true, y_pred):
-    # (B, pred_len, output_size) → (B, pred_len*output_size)
+    # (B, 5, 1) -> (B, 5)
+    if y_pred.dim() == 3 and y_pred.size(-1) == 1:
+        y_pred = y_pred.squeeze(-1)
+
+    # (B, 5) -> (B, 5)
     y_true = y_true.view(y_true.size(0), -1)
     y_pred = y_pred.view(y_pred.size(0), -1)
 
@@ -98,7 +102,7 @@ def train_model(model, train_loader, val_loader, config, device):
                 for Xb, yb in val_loader:
                     Xb, yb = Xb.to(device), yb.to(device)
                     preds = model(Xb)
-                    loss = criterion(preds, yb)
+                    loss = criterion(preds.squeeze(-1), yb)
 
                     val_loss += loss.item() * Xb.size(0)
                     mae, rmse, sign_acc = compute_metrics(yb, preds)
