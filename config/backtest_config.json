@@ -2,7 +2,7 @@
   "model_name": "tftmodel",
   "preprocessed_data_path": "data/precessed_data/emacross_lstm_120_testing.npy",
   "input_size": 5,
-  "output_size": 5,
+  "output_size": 1,
   "hidden_size": 256,
   "num_layers": 4,
   "dropout": 0.1,
@@ -14,9 +14,9 @@
   "max_seq_len": 512,
   "pred_len": 5,
  
-  "buy_threshold": 1.0005,   
-  "stop_loss": -0.99993,    
-  "take_profit": 1.0004,     
+  "buy_threshold": 1.007,   
+  "stop_loss": 0.9995,    
+  "take_profit": 1.0008,     
   "holding_period": 5,
   
   "model_path": "model/tftmodel_final.pth"
