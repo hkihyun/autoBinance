@@ -1,6 +1,6 @@
 from .lstm import LSTMModel
-from .tf import TransformerModel
+from .tft import TransformerModel
 MODEL_REGISTRY = {
     "lstm": LSTMModel,
-    "tfmodel": TransformerModel,
+    "tftmodel": TransformerModel,
 }

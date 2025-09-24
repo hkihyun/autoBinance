@@ -1,0 +1,19 @@
+{
+  "model_name": "tftmodel",
+  "preprocessed_data_path": "data/precessed_data/emacross_lstm_120_training.npy",
+  "input_size": 5,
+  "output_size": 5,
+  "hidden_size": 256,
+  "num_layers": 4,
+  "num_heads": 8,
+  "dropout": 0.1,
+  "learning_rate": 3e-4,
+  "batch_size": 128,
+  "epochs": 50,
+  "loss": "MSELoss",
+  "optimizer": "AdamW",
+  "seq_len": 120,
+  "max_seq_len": 512,
+  "weight_decay": 0.01,
+  "pred_len": 5
+}

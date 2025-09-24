@@ -16,17 +16,18 @@ from tqdm import tqdm
 # SequenceDataset 정의
 # -------------------
 class SequenceDataset(torch.utils.data.Dataset):
-    def __init__(self, X, y, seq_len):
+    def __init__(self, X, y, seq_len, pred_len=5):
         self.X = X
         self.y = y
         self.seq_len = seq_len
+        self.pred_len = pred_len
 
     def __len__(self):
-        return len(self.X) - self.seq_len
+        return len(self.X) - self.seq_len - self.pred_len + 1
 
     def __getitem__(self, idx):
-        x_seq = self.X[idx:idx+self.seq_len]          # (seq_len, input_size)
-        y_seq = self.y[idx+self.seq_len]              # (output_size,)
+        x_seq = self.X[idx:idx+self.seq_len]                      # (seq_len, input_size)
+        y_seq = self.y[idx+self.seq_len : idx+self.seq_len+self.pred_len]  # (pred_len,)
         return x_seq, y_seq
 
 
@@ -52,7 +53,7 @@ def train_model(model, train_loader, val_loader, config, device):
     criterion = loss_class()
 
     opt_class = getattr(optim, config.get("optimizer", "AdamW"))
-    optimizer = opt_class(model.parameters(), lr=config.get("learning_rate", 1e-3))
+    optimizer = opt_class(model.parameters(), lr=config.get("learning_rate"))
 
     # MLflow experiment
     mlflow.set_experiment(f"{config['model_name']}_prediction")
