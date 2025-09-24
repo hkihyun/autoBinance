@@ -1,0 +1,6 @@
+artifact_location: file:///C:/Users/user/Desktop/autoBinance/autoBinance/mlruns/494944916440466318
+creation_time: 1758710142837
+experiment_id: '494944916440466318'
+last_update_time: 1758710142837
+lifecycle_stage: active
+name: tftmodel_prediction

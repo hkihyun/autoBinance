@@ -13,6 +13,7 @@ class TransformerModel(nn.Module):
         output_size,
         seq_len,             
         max_seq_len,
+        pred_len,
         **kwargs
     ):
         super().__init__()
@@ -35,26 +36,26 @@ class TransformerModel(nn.Module):
         self.transformer = nn.TransformerEncoder(encoder_layer, num_layers=num_layers)
 
         # 출력 projection
-        self.fc = nn.Linear(hidden_size, output_size)
+        self.fc = nn.Linear(hidden_size, pred_len * output_size)
+
+        self.attn_pool = nn.Linear(hidden_size, 1)
 
     def forward(self, x):
-        # x: (batch, seq_len, input_size)
-        # ✅ seq_len=32 강제 체크
-        assert x.dim() == 3, f"expected 3D tensor (B, L, C), got {x.shape}"
-        assert x.size(1) == self.seq_len, f"seq_len must be {self.seq_len}, got {x.size(1)}"
+        x = self.input_proj(x) + self.pos_embedding[:, :x.size(1), :]
+        h = self.transformer(x)     # (B, L, H)
 
-        x = self.input_proj(x)                 # (B, L, H)
-        L = x.size(1)
+        # 각 시점마다 중요도 점수 구하기
+        attn_score = torch.softmax(self.attn_pool(h), dim=1)  # (B, L, 1)
 
-        pos = self.pos_embedding[:, :L, :]     # (1, L, H)
-        x = x + pos
+        # 중요도를 가중합해서 context 벡터 생성
+        context = torch.sum(h * attn_score, dim=1)            # (B, H)
 
-        h = self.transformer(x)                # (B, L, H)
-        h_last = h[:, -1, :]                   # (B, H)
-        return self.fc(h_last)                 # (B, output_size)
+        out = self.fc(context)                                # (B, pred_len*output_size)
+        out = out.view(x.size(0), self.pred_len, self.output_size)
+        return out
 
 
 # MODEL_REGISTRY에 등록
 MODEL_REGISTRY = {
-    "tf": TransformerModel,
+    "tft": TransformerModel,
 }
