@@ -1,0 +1,14 @@
+artifact_uri: file:///C:/Users/user/Desktop/autoBinance/autoBinance/mlruns/494944916440466318/6cd90200df5841cb86edd36ac6cdf2a8/artifacts
+end_time: 1758712931150
+entry_point_name: ''
+experiment_id: '494944916440466318'
+lifecycle_stage: active
+run_id: 6cd90200df5841cb86edd36ac6cdf2a8
+run_name: nimble-fly-47
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1758712881436
+status: 4
+tags: []
+user_id: user

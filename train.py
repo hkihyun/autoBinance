@@ -26,22 +26,26 @@ class SequenceDataset(torch.utils.data.Dataset):
         return len(self.X) - self.seq_len - self.pred_len + 1
 
     def __getitem__(self, idx):
-        x_seq = self.X[idx:idx+self.seq_len]                      # (seq_len, input_size)
+        x_seq = self.X[idx:idx+self.seq_len, :]                      # (seq_len, input_size)
         y_seq = self.y[idx+self.seq_len : idx+self.seq_len+self.pred_len]  # (pred_len,)
+        y_seq = y_seq.unsqueeze(-1)   # ✅ (pred_len, 1) 로 맞추기
         return x_seq, y_seq
+
 
 
 # -------------------
 # 지표 계산 함수
 # -------------------
 def compute_metrics(y_true, y_pred):
-    """
-    y_true, y_pred: torch.Tensor [batch, output_size]
-    """
+    # (B, pred_len, output_size) → (B, pred_len*output_size)
+    y_true = y_true.view(y_true.size(0), -1)
+    y_pred = y_pred.view(y_pred.size(0), -1)
+
     mae = torch.mean(torch.abs(y_true - y_pred)).item()
     rmse = torch.sqrt(torch.mean((y_true - y_pred) ** 2)).item()
     sign_acc = (torch.sign(y_true) == torch.sign(y_pred)).float().mean().item()
     return mae, rmse, sign_acc
+
 
 
 # -------------------
@@ -71,7 +75,7 @@ def train_model(model, train_loader, val_loader, config, device):
 
                 optimizer.zero_grad()
                 preds = model(Xb)
-                loss = criterion(preds, yb)
+                loss = criterion(preds.squeeze(-1), yb)
                 loss.backward()
                 optimizer.step()
 
@@ -160,10 +164,10 @@ def main():
     else:
         X, y = torch.load(config["preprocessed_data_path"])
 
-    if model_name in ["tfmodel"]:   # Transformer류 모델이면 SequenceDataset 사용
-        dataset = SequenceDataset(X, y, config["seq_len"])
-    else:
-        dataset = TensorDataset(X, y)
+    # if model_name in ["tftmodel", "tft", "tf", "tfmodel"]:   # Transformer류 모델이면 SequenceDataset 사용
+    #     dataset = SequenceDataset(X, y, config["seq_len"], pred_len=config["pred_len"])
+    # else:
+    dataset = TensorDataset(X, y)
 
     train_size = int(0.8 * len(dataset))
     val_size = len(dataset) - train_size

@@ -1,0 +1,14 @@
+artifact_uri: file:///C:/Users/user/Desktop/autoBinance/autoBinance/mlruns/494944916440466318/23e4b6470a544d8eac6bbef4db5c8b5a/artifacts
+end_time: 1758712424591
+entry_point_name: ''
+experiment_id: '494944916440466318'
+lifecycle_stage: active
+run_id: 23e4b6470a544d8eac6bbef4db5c8b5a
+run_name: glamorous-pig-10
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1758712418832
+status: 4
+tags: []
+user_id: user

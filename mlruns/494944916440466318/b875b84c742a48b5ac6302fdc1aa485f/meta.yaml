@@ -1,0 +1,14 @@
+artifact_uri: file:///C:/Users/user/Desktop/autoBinance/autoBinance/mlruns/494944916440466318/b875b84c742a48b5ac6302fdc1aa485f/artifacts
+end_time: 1758713105612
+entry_point_name: ''
+experiment_id: '494944916440466318'
+lifecycle_stage: active
+run_id: b875b84c742a48b5ac6302fdc1aa485f
+run_name: colorful-cub-598
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1758713097015
+status: 4
+tags: []
+user_id: user

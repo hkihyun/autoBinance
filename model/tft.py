@@ -18,6 +18,9 @@ class TransformerModel(nn.Module):
     ):
         super().__init__()
         self.seq_len = seq_len
+        self.pred_len = pred_len
+        self.output_size = output_size
+
 
         # 입력 feature → embedding
         self.input_proj = nn.Linear(input_size, hidden_size)

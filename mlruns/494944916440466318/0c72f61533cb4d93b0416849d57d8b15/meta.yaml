@@ -1,0 +1,14 @@
+artifact_uri: file:///C:/Users/user/Desktop/autoBinance/autoBinance/mlruns/494944916440466318/0c72f61533cb4d93b0416849d57d8b15/artifacts
+end_time: 1758712534197
+entry_point_name: ''
+experiment_id: '494944916440466318'
+lifecycle_stage: active
+run_id: 0c72f61533cb4d93b0416849d57d8b15
+run_name: redolent-snake-523
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1758712528157
+status: 4
+tags: []
+user_id: user
