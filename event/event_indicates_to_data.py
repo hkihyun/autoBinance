@@ -8,11 +8,15 @@ startegy 에서 인덱스를 추출.
 
 import numpy as np
 
-def make_array_structure(indexs, df):
+def make_array_structure(indexs, past_chart_num, df):
     # 각 크로스 지점 기준으로 전후 30개 row 추출
     result_segments = []
+    past_idx = 0
     for idx in indexs:
-        start = idx - 39
+        if past_idx + past_chart_num // 3 > idx: # 너무 가까우면 제외..?
+            continue
+        past_idx = idx
+        start = idx - past_chart_num + 1
         after_start = idx + 1
         after_end = idx + 6 
         if start < 0 or  after_end > len(df):

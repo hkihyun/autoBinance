@@ -30,9 +30,9 @@ class DetectEvent:
     def load_raw_data(self, path: str) -> pd.DataFrame:
         return load_csv_to_df(path)
 
-    def find_events(self, data: pd.DataFrame) -> np.ndarray:
+    def find_events(self, data: pd.DataFrame, past_chart_num=60) -> np.ndarray:
         indexs = self.strategy.detect(data)
-        events = make_array_structure(indexs=indexs, df=data)
+        events = make_array_structure(indexs=indexs, past_chart_num=past_chart_num, df=data)
         return events
 
     def save_events(self, events: np.ndarray, path: str) -> None:
