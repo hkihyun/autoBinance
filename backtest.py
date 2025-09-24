@@ -66,18 +66,18 @@ def trading_backtest(preds, targets, buy_threshold, stop_loss, take_profit, hold
             ret = targets[i].mean().item()   # ✅ 평균 수익률 사용
 
             if ret < stop_loss:
-                equity = equity * (ret * 50 - 49)
+                equity = equity * (ret * 10 - 9)
                 exit_type = "STOP_LOSS"
                 exit_ret = ret
 
             elif ret >= take_profit:
-                equity = equity * (ret * 50 - 49)
+                equity = equity * (ret * 10 - 9)
                 exit_type = "TAKE_PROFIT"
                 exit_ret = ret
 
             # 기간 종료로 청산
             else:
-                equity = equity * (ret * 50 - 49) # 10배 레버리지 가정, 소수점 5자리
+                equity = equity * (ret * 10 - 9) # 10배 레버리지 가정, 소수점 5자리
                 exit_type = "TIME_EXIT"
                 exit_ret = ret
 
