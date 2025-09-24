@@ -159,6 +159,10 @@ def main():
         device = torch.device("mps")
     else:
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    print(">>> DEBUG model_name:", model_name)
+    print(">>> DEBUG output_size:", config["output_size"])
+    print(">>> DEBUG config keys:", config.keys())
+
     model = ModelClass(**config).to(device)
     model.load_state_dict(torch.load(config["model_path"], map_location=device))
 
