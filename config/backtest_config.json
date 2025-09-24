@@ -16,7 +16,7 @@
  
   "buy_threshold": 1.0076,   
   "stop_loss": 0.9995,    
-  "take_profit": 1.0010,     
+  "take_profit": 1.0040,     
   "holding_period": 5,
   
   "model_path": "model/tftmodel_final.pth"

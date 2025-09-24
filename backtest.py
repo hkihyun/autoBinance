@@ -66,18 +66,18 @@ def trading_backtest(preds, targets, buy_threshold, stop_loss, take_profit, hold
             ret = targets[i].mean().item()   # ✅ 평균 수익률 사용
 
             if ret < stop_loss:
-                equity = equity * (ret * 10 - 9)
+                equity = equity + (ret * 20 - 20) - 20 * 0.001 # 10배 레버리지 가정, 수수료 0.1%, 소수점 5자리
                 exit_type = "STOP_LOSS"
                 exit_ret = ret
 
             elif ret >= take_profit:
-                equity = equity * (ret * 10 - 9)
+                equity = equity + (ret * 20 - 20) - 20 * 0.001 # 10배 레버리지 가정, 수수료 0.1%, 소수점 5자리
                 exit_type = "TAKE_PROFIT"
                 exit_ret = ret
 
             # 기간 종료로 청산
             else:
-                equity = equity * (ret * 10 - 9) # 10배 레버리지 가정, 소수점 5자리
+                equity = equity + (ret * 20 - 20) - 20 * 0.001 # 10배 레버리지 가정, 수수료 0.1%, 소수점 5자리
                 exit_type = "TIME_EXIT"
                 exit_ret = ret
 
@@ -158,9 +158,9 @@ def main():
         device = torch.device("mps")
     else:
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    print(">>> DEBUG model_name:", model_name)
-    print(">>> DEBUG output_size:", config["output_size"])
-    print(">>> DEBUG config keys:", config.keys())
+    # print(">>> DEBUG model_name:", model_name)
+    # print(">>> DEBUG output_size:", config["output_size"])
+    # print(">>> DEBUG config keys:", config.keys())
 
     model = ModelClass(**config).to(device)
     model.load_state_dict(torch.load(config["model_path"], map_location=device))
