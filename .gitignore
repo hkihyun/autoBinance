@@ -14,3 +14,5 @@ data/precessed_data/emacross_lstm_testing.npy
 data/precessed_data/emacross_lstm_120_training.npy
 .DS_Store
 data/.DS_Store
+data/precessed_data/emacross_lstm_120_testing.npy
+model/.DS_Store

@@ -1,0 +1,14 @@
+artifact_uri: file:///C:/Users/user/Desktop/autoBinance/autoBinance/mlruns/494944916440466318/00136f71896a41d99da7efef2fc16678/artifacts
+end_time: 1758720400905
+entry_point_name: ''
+experiment_id: '494944916440466318'
+lifecycle_stage: active
+run_id: 00136f71896a41d99da7efef2fc16678
+run_name: judicious-swan-632
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1758715043615
+status: 4
+tags: []
+user_id: anseho

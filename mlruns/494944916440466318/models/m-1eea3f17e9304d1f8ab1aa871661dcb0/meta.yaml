@@ -1,0 +1,10 @@
+artifact_location: file:///C:/Users/user/Desktop/autoBinance/autoBinance/mlruns/494944916440466318/models/m-1eea3f17e9304d1f8ab1aa871661dcb0/artifacts
+creation_timestamp: 1758720397682
+experiment_id: '494944916440466318'
+last_updated_timestamp: 1758720400903
+model_id: m-1eea3f17e9304d1f8ab1aa871661dcb0
+model_type: null
+name: model_tftmodel
+source_run_id: 00136f71896a41d99da7efef2fc16678
+status: 3
+status_message: null
